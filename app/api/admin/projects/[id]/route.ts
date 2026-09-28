@@ -162,8 +162,12 @@ export async function PUT(request: Request, { params }: Params) {
     if (error instanceof Error && error.message === "UNAUTHORIZED") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    console.error("[admin/projects PUT]", error);
     return NextResponse.json(
-      { error: "Failed to update project" },
+      {
+        error:
+          error instanceof Error ? error.message : "Failed to update project",
+      },
       { status: 500 },
     );
   }
@@ -193,7 +197,17 @@ export async function DELETE(_request: Request, { params }: Params) {
       saveProjects(nextProjects),
     ]);
     return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "UNAUTHORIZED") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("[admin/projects DELETE]", error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : "Failed to delete project",
+      },
+      { status: 500 },
+    );
   }
 }

@@ -1,33 +1,24 @@
 import "server-only";
 
-import { promises as fs } from "fs";
-import path from "path";
 import { revalidatePath } from "next/cache";
+import {
+  readDataJson,
+  writeDataJson,
+  type DataFile,
+} from "@/lib/dataStore";
 import type { Project } from "@/lib/projects";
 import type { WorkItem } from "@/lib/work";
 
-const dataDir = path.join(process.cwd(), "data");
-const workPath = path.join(dataDir, "work.json");
-const projectsPath = path.join(dataDir, "projects.json");
-const legacyCaseStudiesPath = path.join(dataDir, "case-studies.json");
-
-async function readJson<T>(filePath: string): Promise<T> {
-  const raw = await fs.readFile(filePath, "utf8");
-  return JSON.parse(raw) as T;
-}
-
-async function writeJson(filePath: string, data: unknown) {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
-}
-
-async function fileExists(filePath: string) {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
+async function readJson<T>(file: DataFile): Promise<T> {
+  const data = await readDataJson<T>(file);
+  if (data === null) {
+    throw new Error(`Missing data file: ${file}`);
   }
+  return data;
+}
+
+async function writeJson(file: DataFile, data: unknown) {
+  await writeDataJson(file, data);
 }
 
 export function slugify(value: string) {
@@ -40,11 +31,11 @@ export function slugify(value: string) {
 }
 
 export async function getWorkItems(): Promise<WorkItem[]> {
-  return readJson<WorkItem[]>(workPath);
+  return readJson<WorkItem[]>("work.json");
 }
 
 export async function saveWorkItems(items: WorkItem[]) {
-  await writeJson(workPath, items);
+  await writeJson("work.json", items);
   revalidatePath("/");
   revalidatePath("/work");
   revalidatePath("/admin");
@@ -52,19 +43,19 @@ export async function saveWorkItems(items: WorkItem[]) {
 }
 
 export async function getProjects(): Promise<Project[]> {
-  if (await fileExists(projectsPath)) {
-    return readJson<Project[]>(projectsPath);
-  }
-  if (await fileExists(legacyCaseStudiesPath)) {
-    return readJson<Project[]>(legacyCaseStudiesPath);
-  }
+  const projects = await readDataJson<Project[]>("projects.json");
+  if (projects) return projects;
+
+  const legacy = await readDataJson<Project[]>("case-studies.json");
+  if (legacy) return legacy;
+
   return [];
 }
 
 export async function saveProjects(projects: Project[]) {
-  await writeJson(projectsPath, projects);
+  await writeJson("projects.json", projects);
   // Keep legacy file in sync during migration
-  await writeJson(legacyCaseStudiesPath, projects);
+  await writeJson("case-studies.json", projects);
   revalidatePath("/");
   revalidatePath("/work");
   revalidatePath("/admin");

@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
+import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin/auth";
 
@@ -42,9 +43,32 @@ export async function POST(request: Request) {
           : file.type.split("/")[1] || "png";
 
     const filename = `${Date.now()}-${randomUUID().slice(0, 8)}.${ext}`;
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    // Vercel (and other serverless hosts) use a read-only filesystem.
+    // Prefer Blob storage when the token is configured.
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put(`uploads/${filename}`, buffer, {
+        access: "public",
+        contentType: file.type,
+        token: process.env.BLOB_READ_WRITE_TOKEN,
+      });
+      return NextResponse.json({ url: blob.url });
+    }
+
+    if (process.env.VERCEL) {
+      return NextResponse.json(
+        {
+          error:
+            "Blob storage is not configured. Add a Vercel Blob store and set BLOB_READ_WRITE_TOKEN.",
+        },
+        { status: 500 },
+      );
+    }
+
+    // Local / self-hosted fallback
     const uploadDir = path.join(process.cwd(), "public", "uploads");
     await fs.mkdir(uploadDir, { recursive: true });
-    const buffer = Buffer.from(await file.arrayBuffer());
     await fs.writeFile(path.join(uploadDir, filename), buffer);
 
     return NextResponse.json({ url: `/uploads/${filename}` });
@@ -52,6 +76,11 @@ export async function POST(request: Request) {
     if (error instanceof Error && error.message === "UNAUTHORIZED") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    console.error("[admin/upload]", error);
+    const message =
+      error instanceof Error && error.message
+        ? error.message
+        : "Upload failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -114,8 +114,12 @@ export async function POST(request: Request) {
     if (error instanceof Error && error.message === "UNAUTHORIZED") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    console.error("[admin/projects POST]", error);
     return NextResponse.json(
-      { error: "Failed to create project" },
+      {
+        error:
+          error instanceof Error ? error.message : "Failed to create project",
+      },
       { status: 500 },
     );
   }
