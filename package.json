@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "blob:sync": "node scripts/sync-to-blob.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",
