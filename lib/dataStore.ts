@@ -39,29 +39,43 @@ async function writeLocalJson(file: DataFile, data: unknown) {
 }
 
 async function readBlobJson<T>(file: DataFile): Promise<T | null> {
-  const result = await get(`data/${file}`, {
-    access: "public",
-    useCache: false,
-    token: process.env.BLOB_READ_WRITE_TOKEN,
-  });
+  // Support both "data/${file}" and root "${file}" in the Blob store
+  const candidates = [`data/${file}`, file];
+  for (const pathname of candidates) {
+    try {
+      const result = await get(pathname, {
+        access: "public",
+        useCache: false,
+        token: process.env.BLOB_READ_WRITE_TOKEN,
+      });
 
-  if (!result || result.statusCode !== 200 || !result.stream) {
-    return null;
+      if (result && result.statusCode === 200 && result.stream) {
+        const raw = await streamToText(result.stream);
+        return JSON.parse(raw) as T;
+      }
+    } catch {
+      // Continue to next candidate path
+    }
   }
-
-  const raw = await streamToText(result.stream);
-  return JSON.parse(raw) as T;
+  return null;
 }
 
 async function writeBlobJson(file: DataFile, data: unknown) {
-  await put(`data/${file}`, `${JSON.stringify(data, null, 2)}\n`, {
-    access: "public",
+  const content = `${JSON.stringify(data, null, 2)}\n`;
+  const options = {
+    access: "public" as const,
     contentType: "application/json",
     addRandomSuffix: false,
     allowOverwrite: true,
     cacheControlMaxAge: 60,
     token: process.env.BLOB_READ_WRITE_TOKEN,
-  });
+  };
+
+  // Sync to both data/ prefix and root for full compatibility
+  await Promise.all([
+    put(`data/${file}`, content, options),
+    put(file, content, options),
+  ]);
 }
 
 /**

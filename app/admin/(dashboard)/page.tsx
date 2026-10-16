@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { getContentStats } from "@/lib/content";
+import { isBlobStorageConfigured } from "@/lib/dataStore";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const stats = await getContentStats();
+  const blobActive = isBlobStorageConfigured();
 
   const cards = [
     { label: "Total work", value: stats.totalWork },
@@ -17,7 +19,20 @@ export default async function AdminDashboardPage() {
     <div className="space-y-8 text-white">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-medium text-white">Dashboard</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-medium text-white">Dashboard</h2>
+            {blobActive ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Vercel Blob Active
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#2f2a24] bg-[#1a1714] px-2.5 py-0.5 text-[11px] font-medium text-[#87817a]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#87817a]" />
+                Local Storage
+              </span>
+            )}
+          </div>
           <p className="mt-1 text-sm text-[#87817a]">
             Overview of portfolio content. Latest year: {stats.latestYear}
           </p>
