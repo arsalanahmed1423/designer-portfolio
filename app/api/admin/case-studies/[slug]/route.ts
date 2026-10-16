@@ -11,6 +11,8 @@ import type { CaseStudy } from "@/lib/caseStudies";
 
 type Params = { params: Promise<{ slug: string }> };
 
+export const dynamic = "force-dynamic";
+
 export async function GET(_request: Request, { params }: Params) {
   try {
     await requireAdmin();

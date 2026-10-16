@@ -10,6 +10,8 @@ import {
 import { requireAdmin } from "@/lib/admin/auth";
 import type { CaseStudy } from "@/lib/caseStudies";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await requireAdmin();

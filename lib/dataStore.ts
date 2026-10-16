@@ -38,14 +38,54 @@ async function writeLocalJson(file: DataFile, data: unknown) {
   );
 }
 
+function getBlobStoreHost(): string | null {
+  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  if (token) {
+    const match = token.match(/^vercel_blob_rw_([a-zA-Z0-9]+)_/);
+    if (match) return `${match[1].toLowerCase()}.public.blob.vercel-storage.com`;
+  }
+  if (process.env.BLOB_STORE_ID) {
+    const id = process.env.BLOB_STORE_ID.replace(/^store_/, "").toLowerCase();
+    return `${id}.public.blob.vercel-storage.com`;
+  }
+  return null;
+}
+
 async function readBlobJson<T>(file: DataFile): Promise<T | null> {
   // Support both "data/${file}" and root "${file}" in the Blob store
   const candidates = [`data/${file}`, file];
+  const host = getBlobStoreHost();
+
   for (const pathname of candidates) {
+    // 1) Direct HTTP fetch with cache: 'no-store' to bypass Next.js Data Cache & CDN
+    if (host) {
+      try {
+        const url = `https://${host}/${pathname}?_t=${Date.now()}`;
+        const res = await fetch(url, {
+          cache: "no-store",
+          headers: {
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+          },
+        });
+        if (res.ok) {
+          const raw = await res.text();
+          return JSON.parse(raw) as T;
+        }
+      } catch {
+        // Fall back to Blob SDK get
+      }
+    }
+
+    // 2) Fallback: @vercel/blob get() with no-cache headers
     try {
       const result = await get(pathname, {
         access: "public",
         useCache: false,
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+        },
         token: process.env.BLOB_READ_WRITE_TOKEN,
       });
 

@@ -19,6 +19,8 @@ type ProjectPayload = Partial<Project> & {
   comingSoon?: boolean;
 };
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await requireAdmin();

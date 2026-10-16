@@ -36,6 +36,7 @@ export async function getWorkItems(): Promise<WorkItem[]> {
 
 export async function saveWorkItems(items: WorkItem[]) {
   await writeJson("work.json", items);
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/work");
   revalidatePath("/admin");
@@ -56,6 +57,7 @@ export async function saveProjects(projects: Project[]) {
   await writeJson("projects.json", projects);
   // Keep legacy file in sync during migration
   await writeJson("case-studies.json", projects);
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/work");
   revalidatePath("/admin");
