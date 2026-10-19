@@ -1,14 +1,132 @@
 [
   {
-    "id": "test",
-    "name": "Test",
-    "meta": "IT",
+    "id": "options-depth",
+    "name": "Options Depth",
+    "meta": "Digital Trading",
+    "year": "2025",
+    "image": "/uploads/1790409146377-83a26330.jpg",
+    "category": "case-study",
+    "aspect": "346 / 260",
+    "href": "/work/options-depth",
+    "comingSoon": false,
+    "selectedWork": true
+  },
+  {
+    "id": "prosper-architecture",
+    "name": "Prosper Architecture",
+    "meta": "Architecture",
     "year": "2026",
-    "image": "/uploads/1790357400668-3a7f927b.jpg",
+    "image": "/images/case-studies/case-study2.png",
+    "category": "case-study",
+    "aspect": "346 / 259",
+    "href": "/work/prosper-architecture",
+    "selectedWork": true
+  },
+  {
+    "id": "dot-portal",
+    "name": "The Dot Theory",
+    "meta": "Healthcare & Wellness",
+    "year": "2025",
+    "image": "/images/case-studies/case-study3.png",
+    "category": "case-study",
+    "aspect": "346 / 224",
+    "href": "/work/dot-portal",
+    "selectedWork": true
+  },
+  {
+    "id": "ospi",
+    "name": "OSPI",
+    "meta": "CMS",
+    "year": "2025",
+    "image": "/images/project1.png",
+    "category": "project",
+    "aspect": "346 / 259",
+    "href": "#",
+    "comingSoon": true,
+    "selectedWork": true
+  },
+  {
+    "id": "maria-b",
+    "name": "Maria b",
+    "meta": "Ecommerce",
+    "year": "2025",
+    "image": "/images/project2.png",
     "category": "project",
     "aspect": "346 / 260",
-    "href": "/work/test",
-    "comingSoon": false
+    "href": "#",
+    "selectedWork": true
+  },
+  {
+    "id": "nishat",
+    "name": "Nishat",
+    "meta": "Retail",
+    "year": "2024",
+    "image": "/images/project3.png",
+    "category": "project",
+    "aspect": "346 / 240",
+    "href": "#",
+    "comingSoon": true,
+    "selectedWork": true
+  },
+  {
+    "id": "airkart",
+    "name": "Airkart",
+    "meta": "Ecommerce",
+    "year": "2024",
+    "image": "/images/project5.png",
+    "category": "project",
+    "aspect": "346 / 303",
+    "href": "#",
+    "comingSoon": true,
+    "selectedWork": true
+  },
+  {
+    "id": "walim",
+    "name": "Walim",
+    "meta": "Ride Hailing",
+    "year": "2025",
+    "image": "/images/project4.png",
+    "category": "project",
+    "aspect": "346 / 259",
+    "href": "#",
+    "comingSoon": true,
+    "selectedWork": true
+  },
+  {
+    "id": "lumu",
+    "name": "Lumu",
+    "meta": "Retail",
+    "year": "2025",
+    "image": "/images/project6.png",
+    "category": "project",
+    "aspect": "346 / 203",
+    "href": "#",
+    "comingSoon": true,
+    "selectedWork": true
+  },
+  {
+    "id": "booosted",
+    "name": "Booosted",
+    "meta": "AI Chatbot",
+    "year": "2024",
+    "image": "/images/project7.png",
+    "category": "project",
+    "aspect": "346 / 316",
+    "href": "#",
+    "comingSoon": true,
+    "selectedWork": true
+  },
+  {
+    "id": "squid-erp",
+    "name": "Squid ERP",
+    "meta": "Enterprise",
+    "year": "2023",
+    "image": "/images/project8.png",
+    "category": "project",
+    "aspect": "346 / 224",
+    "href": "#",
+    "comingSoon": true,
+    "selectedWork": true
   },
   {
     "id": "wellme",
@@ -19,117 +137,6 @@
     "category": "case-study",
     "aspect": "346 / 260",
     "href": "/work/wellme"
-  },
-  {
-    "id": "options-depth",
-    "name": "Options Depth",
-    "meta": "Trading",
-    "year": "2025",
-    "image": "/uploads/1790409146377-83a26330.jpg",
-    "category": "project",
-    "aspect": "346 / 260",
-    "href": "/work/options-depth",
-    "comingSoon": false
-  },
-  {
-    "id": "prosper-architecture",
-    "name": "Prosper Architecture",
-    "meta": "Architecture",
-    "year": "2026",
-    "image": "/images/case-studies/case-study2.png",
-    "category": "project",
-    "aspect": "346 / 259",
-    "href": "/work/prosper-architecture"
-  },
-  {
-    "id": "dot-portal",
-    "name": "Dot Portal",
-    "meta": "Healthcare & Wellness",
-    "year": "2025",
-    "image": "/images/case-studies/case-study3.png",
-    "category": "project",
-    "aspect": "346 / 224",
-    "href": "/work/dot-portal"
-  },
-  {
-    "id": "ospi",
-    "name": "OSPI",
-    "meta": "CMS",
-    "year": "2025",
-    "image": "/images/project1.png",
-    "category": "project",
-    "aspect": "346 / 259",
-    "href": "#"
-  },
-  {
-    "id": "maria-b",
-    "name": "Maria b",
-    "meta": "Ecommerce",
-    "year": "2025",
-    "image": "/images/project2.png",
-    "category": "project",
-    "aspect": "346 / 260",
-    "href": "#"
-  },
-  {
-    "id": "nishat",
-    "name": "Nishat",
-    "meta": "Retail",
-    "year": "2024",
-    "image": "/images/project3.png",
-    "category": "project",
-    "aspect": "346 / 240",
-    "href": "#"
-  },
-  {
-    "id": "walim",
-    "name": "Walim",
-    "meta": "Ride Hailing",
-    "year": "2024",
-    "image": "/images/project4.png",
-    "category": "project",
-    "aspect": "346 / 259",
-    "href": "#"
-  },
-  {
-    "id": "airkart",
-    "name": "Airkart",
-    "meta": "Ecommerce",
-    "year": "2024",
-    "image": "/images/project5.png",
-    "category": "project",
-    "aspect": "346 / 303",
-    "href": "#"
-  },
-  {
-    "id": "lumu",
-    "name": "Lumu",
-    "meta": "Retail",
-    "year": "2024",
-    "image": "/images/project6.png",
-    "category": "project",
-    "aspect": "346 / 203",
-    "href": "#"
-  },
-  {
-    "id": "booosted",
-    "name": "Booosted",
-    "meta": "AI Chatbot",
-    "year": "2024",
-    "image": "/images/project7.png",
-    "category": "project",
-    "aspect": "346 / 316",
-    "href": "#"
-  },
-  {
-    "id": "squid-erp",
-    "name": "Squid ERP",
-    "meta": "Enterprise",
-    "year": "2023",
-    "image": "/images/project8.png",
-    "category": "project",
-    "aspect": "346 / 224",
-    "href": "#"
   },
   {
     "id": "unampay",

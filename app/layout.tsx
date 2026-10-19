@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     "UX designer working across design, execution, and AI workflows.",
 };
 
-const themeInitScript = `
+const headInitScript = `
 (() => {
   try {
     const theme = localStorage.getItem("theme");
@@ -51,6 +51,40 @@ const themeInitScript = `
   } catch {
     document.documentElement.dataset.theme = "dark";
   }
+
+  try {
+    const clean = (el) => {
+      if (el && el.removeAttribute) {
+        if (el.hasAttribute("bis_skin_checked")) el.removeAttribute("bis_skin_checked");
+        if (el.hasAttribute("bis_register")) el.removeAttribute("bis_register");
+      }
+    };
+    const observer = new MutationObserver((mutations) => {
+      for (let i = 0; i < mutations.length; i++) {
+        const m = mutations[i];
+        if (m.type === "attributes") {
+          if (m.attributeName === "bis_skin_checked" || m.attributeName === "bis_register") {
+            m.target.removeAttribute(m.attributeName);
+          }
+        } else if (m.type === "childList") {
+          for (let j = 0; j < m.addedNodes.length; j++) {
+            const n = m.addedNodes[j];
+            if (n.nodeType === 1) {
+              clean(n);
+              const list = n.querySelectorAll?.("[bis_skin_checked], [bis_register]");
+              if (list) for (let k = 0; k < list.length; k++) clean(list[k]);
+            }
+          }
+        }
+      }
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      subtree: true,
+      childList: true,
+      attributeFilter: ["bis_skin_checked", "bis_register"],
+    });
+  } catch {}
 })();
 `;
 
@@ -67,9 +101,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: headInitScript }} />
       </head>
-      <body className="relative flex min-h-full flex-col font-sans">
+      <body
+        className="relative flex min-h-full flex-col font-sans"
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <CursorGlow />
           {children}

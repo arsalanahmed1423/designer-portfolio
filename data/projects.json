@@ -6,7 +6,7 @@
     "meta": [
       {
         "label": "Industry",
-        "value": "Trading"
+        "value": "Digital Trading"
       },
       {
         "label": "Region",
@@ -368,45 +368,5 @@
         ]
       }
     ]
-  },
-  {
-    "slug": "test",
-    "title": "Test",
-    "summary": "jsjsj",
-    "meta": [
-      {
-        "label": "Industry",
-        "value": "IT"
-      },
-      {
-        "label": "Region",
-        "value": "UK"
-      },
-      {
-        "label": "Year",
-        "value": "2026"
-      },
-      {
-        "label": "Role",
-        "value": "UX/UI Designer"
-      }
-    ],
-    "siteUrl": "http://google.com/",
-    "cover": "/uploads/1790357400668-3a7f927b.jpg",
-    "coverAlt": "Test cover",
-    "widgets": [
-      {
-        "id": "w_hm30pdgc",
-        "type": "heading",
-        "title": "Testttt"
-      },
-      {
-        "id": "w_i4x49t9k",
-        "type": "image",
-        "src": "/uploads/1790357425194-f17be6b2.jpg",
-        "alt": ""
-      }
-    ],
-    "blocks": []
   }
 ]

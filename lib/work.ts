@@ -10,6 +10,7 @@ export type WorkItem = {
   aspect?: string;
   href?: string;
   comingSoon?: boolean;
+  selectedWork?: boolean;
 };
 
 export function filterWorkItems(

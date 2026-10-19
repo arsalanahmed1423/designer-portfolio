@@ -15,21 +15,25 @@ export default async function Home() {
     getProjects(),
   ]);
 
-  const featuredProjects = projects.map((project) => {
-    const card = workItems.find((item) => item.id === project.slug);
+  const detailMap = new Map(projects.map((p) => [p.slug, p]));
+
+  // Selected work items matching the homepage featured table
+  const selectedItems = workItems.filter((item) => item.selectedWork);
+  const studiesList = selectedItems.length > 0 ? selectedItems : workItems;
+
+  const featuredProjects = studiesList.map((item) => {
+    const detail = detailMap.get(item.id);
     return {
-      name: project.title,
+      name: detail?.title ?? item.name,
       type:
-        project.meta.find((m) => m.label.toLowerCase() === "industry")?.value ??
-        card?.meta ??
-        "Project",
+        detail?.meta.find((m) => m.label.toLowerCase() === "industry")?.value ??
+        item.meta,
       year:
-        project.meta.find((m) => m.label.toLowerCase() === "year")?.value ??
-        card?.year ??
-        "",
-      href: `/work/${project.slug}`,
-      image: project.cover,
-      comingSoon: card?.comingSoon,
+        detail?.meta.find((m) => m.label.toLowerCase() === "year")?.value ??
+        item.year,
+      href: detail ? `/work/${detail.slug}` : (item.href ?? "#"),
+      image: detail?.cover ?? item.image,
+      comingSoon: item.comingSoon,
     };
   });
 

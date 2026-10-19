@@ -132,6 +132,7 @@ export function workItemFromProject(
     aspect: extras?.aspect ?? "346 / 260",
     href: `/work/${project.slug}`,
     comingSoon: extras?.comingSoon,
+    selectedWork: extras?.selectedWork,
   };
 }
 
